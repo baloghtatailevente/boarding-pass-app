@@ -190,4 +190,4 @@ app.get('/view', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, "192.168.1.22", () => console.log('Server running on port ' + PORT));
+app.listen(PORT, () => console.log('Server running on port ' + PORT));
