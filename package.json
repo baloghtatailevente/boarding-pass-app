@@ -1,0 +1,18 @@
+{
+  "name": "boarding-pass-app",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "bwip-js": "^2.0.9",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3",
+    "nodemailer": "^6.9.1",
+    "qrcode": "^1.5.3"
+  }
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Boarding Passes</title>
+</head>
+<body>
+  <h1>All Boarding Passes</h1>
+  <table border="1">
+    <tr>
+      <th>Airline</th>
+      <th>Flight</th>
+      <th>Destination</th>
+      <th>Connection</th>
+      <th>Seat</th>
+      <th>QR</th>
+      <th>Barcode</th>
+    </tr>
+    <% passes.forEach(pass => { %>
+      <tr>
+        <td><%= pass.airline %></td>
+        <td><%= pass.flightNumber %></td>
+        <td><%= pass.destination %></td>
+        <td><%= pass.connection || '-' %></td>
+        <td><%= pass.seat %></td>
+        <td><img src="<%= pass.qr %>" width="100"/></td>
+        <td><img src="<%= pass.barcode %>" width="100"/></td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>

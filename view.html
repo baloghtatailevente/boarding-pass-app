@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Boarding Pass</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+    margin: 0;
+  }
+
+  .container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    width: 400px;
+  }
+
+  h2 {
+    color: #0052cc;
+    text-align: center;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background: #0052cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #003d99;
+  }
+
+  .info {
+    margin-top: 20px;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .info p {
+    margin: 6px 0;
+  }
+
+  .error {
+    color: red;
+    margin-top: 15px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>View Boarding Pass</h2>
+  <input type="text" id="passId" placeholder="Enter Boarding Pass ID" />
+  <button id="viewBtn">View</button>
+
+  <div class="info" id="info"></div>
+  <div class="error" id="error"></div>
+</div>
+
+<script>
+  const viewBtn = document.getElementById('viewBtn');
+const passIdInput = document.getElementById('passId');
+const infoDiv = document.getElementById('info');
+const errorDiv = document.getElementById('error');
+
+passIdInput.focus()
+function viewPass() {
+  let id = passIdInput.value.trim();
+
+  // Replace ö/Ö with 0
+  id = id.replace(/ö/g, '0').replace(/Ö/g, '0');
+
+  infoDiv.innerHTML = '';
+  errorDiv.innerText = '';
+
+  if (!id) {
+    errorDiv.innerText = 'Please enter a Boarding Pass ID.';
+    return;
+  }
+
+  fetch(`/api/pass/${id}`)
+    .then(res => {
+      if (!res.ok) return res.json().then(err => { throw new Error(err.error || 'Not found'); });
+      return res.json();
+    })
+    .then(pass => {
+      infoDiv.innerHTML = `
+        <p><b>Passenger Name:</b> ${pass.passengerName}</p>
+        <p><b>Airline:</b> ${pass.airline}</p>
+        <p><b>Flight Number:</b> ${pass.flightNumber}</p>
+        <p><b>Seat:</b> ${pass.seat}</p>
+        <p><b>Destination:</b> ${pass.destination}</p>
+        <p><b>Connection:</b> ${pass.connection ? pass.connection : 'None'}</p>
+        <p><b>Created At:</b> ${new Date(pass.createdAt).toLocaleString()}</p>
+      `;
+    })
+    .catch(err => { errorDiv.innerText = err.message; });
+
+    passIdInput.value = ""
+}
+
+// Trigger when button is clicked
+viewBtn.addEventListener('click', viewPass);
+
+// Trigger when pressing Enter in input
+passIdInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') viewPass();
+});
+
+
+
+</script>
+
+</body>
+</html>
